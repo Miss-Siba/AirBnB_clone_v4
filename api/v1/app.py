@@ -17,7 +17,7 @@ app.register_blueprint(app_views)
 
 # Method to handle teardown_appcontext
 @app.teardown_appcontext
-def teardown_appcontext(exception):
+def teardown(exception):
     """Close the storage session after each request."""
     storage.close()
 
@@ -37,9 +37,4 @@ def handle_404(exception):
     return(resp)
 
 if __name__ == '__main__':
-    # Set host and port based on environment variables or defaults
-    host = os.getenv('HBNB_API_HOST', '0.0.0.0')
-    port = int(os.getenv('HBNB_API_PORT', 5000))
-
-    # Run the Flask application
-    app.run(host=host, port=port, threaded=True)
+    app.run(getenv("HBNB_API_HOST"), getenv("HBNB_API_PORT"))

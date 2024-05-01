@@ -7,16 +7,22 @@ from api.v1.views import app_views
 from flask import jsonify
 
 
-@app_views.route('/status', methods=['GET'])
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """Return a JSON response indicating status OK."""
-    return jsonify({'status': 'OK'})
+    data = {
+            "status":"OK"
+            }
+    resp = jsonify(data)
+    resp.status_code = 200
+
+    return resp
 
 @app_views.route("/stats", methods=['GET'], strict_slashes=False)
 def stats():
     """
-    stats of all objs route
-    :return: json of all objs
+    stats of all objects route
+    :return: json of all objects
     """
     data = {
         "amenities": storage.count("Amenity"),
@@ -26,5 +32,7 @@ def stats():
         "states": storage.count("State"),
         "users": storage.count("User"),
     }
+    resp = jsonify(data)
+    resp.status_code = 200
 
-    return jsonify(data)
+    return resp
