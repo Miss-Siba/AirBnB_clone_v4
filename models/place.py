@@ -6,8 +6,10 @@ from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
+storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
-if models.storage_t == 'db':
+
+if os.getenv("HBNB_TYPE_STORAGE") == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id', onupdate='CASCADE',
@@ -21,7 +23,7 @@ if models.storage_t == 'db':
 
 class Place(BaseModel, Base):
     """Representation of Place """
-    if models.storage_t == 'db':
+    if storage_t == 'db':
         __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -76,3 +78,12 @@ class Place(BaseModel, Base):
                 if amenity.place_id == self.id:
                     amenity_list.append(amenity)
             return amenity_list
+
+	@amenities.setter
+        def amenities(self, amenity):
+            """
+            ammenities setter
+            :return:
+            """
+            self.amenity_ids.append(amenity.id)
+
